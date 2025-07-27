@@ -1,1 +1,347 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReZa DNS Panel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }.panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
 
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.8rem;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #845ec2, #2c73d2);
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #a178df, #4a90e2);
+}
+
+.output {
+  margin-top: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  word-wrap: break-word;
+}
+
+.copy-btn {
+  margin-top: 0.5rem;
+  background: #ffffff33;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+  </style>
+</head><body>
+  <div class="panel">
+    <h1>ReZa DNS Panel</h1>
+    <label>انتخاب کشور</label>
+    <select id="country">
+      <option>ایران</option>
+      <option>عراق</option>
+      <option>ترکیه</option>
+      <option>فرانسه</option>
+      <option>هلند</option>
+    </select><label>مدت زمان DNS (روز)</label>
+<input type="number" id="duration" min="1" />
+
+<label>حجم مصرفی DNS (گیگ)</label>
+<input type="number" id="volume" min="1" />
+
+<label>نوع DNS</label>
+<select id="type">
+  <option>معمولی</option>
+  <option>گلد</option>
+  <option>VIP</option>
+</select>
+
+<label>تعداد کد</label>
+<input type="number" id="count" min="1" />
+
+<label>نسل DNS</label>
+<select id="version">
+  <option value="ipv4">IPv4</option>
+  <option value="ipv6">IPv6</option>
+</select>
+
+<label>نوع سیمکارت</label>
+<select id="sim">
+  <option>ایرانسل</option>
+  <option>همراه اول</option>
+  <option>رایتل</option>
+</select>
+
+<button onclick="generateDNS()">تولید</button>
+
+<div class="output" id="output" style="display: none">
+  <div id="info"></div>
+  <div><strong>DNS:</strong> <span id="dns"></span></div>
+  <button class="copy-btn" onclick="copyDNS()">کپی DNS</button>
+</div>
+
+  </div>  <script>
+    function randomIPv4() {
+      return `45.${rand(0, 255)}.${rand(0, 255)}.${rand(1, 254)}`;
+    }
+
+    function randomIPv6() {
+      const parts = Array.from({ length: 7 }, () => Math.floor(Math.random() * 0xffff).toString(16));
+      return `2a00:${parts.join(':')}`;
+    }
+
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateDNS() {
+      const country = document.getElementById('country').value;
+      const duration = document.getElementById('duration').value;
+      const volume = document.getElementById('volume').value;
+      const type = document.getElementById('type').value;
+      const count = document.getElementById('count').value;
+      const version = document.getElementById('version').value;
+      const sim = document.getElementById('sim').value;
+
+      const dns = version === 'ipv4' ? randomIPv4() : randomIPv6();
+
+      document.getElementById('info').innerHTML = `
+        <strong>کشور:</strong> ${country} <br>
+        <strong>مدت:</strong> ${duration} روز<br>
+        <strong>حجم:</strong> ${volume} گیگ<br>
+        <strong>نوع:</strong> ${type}<br>
+        <strong>تعداد:</strong> ${count}<br>
+        <strong>نسل:</strong> ${version.toUpperCase()}<br>
+        <strong>سیمکارت:</strong> ${sim}<br>
+      `;
+      document.getElementById('dns').innerText = dns;
+      document.getElementById('output').style.display = 'block';
+    }
+
+    function copyDNS() {
+      const dnsText = document.getElementById('dns').innerText;
+      navigator.clipboard.writeText(dnsText).then(() => {
+        alert('DNS با موفقیت کپی شد!');
+      });
+    }
+  </script></body></html><!DOCTYPE html><html lang="fa" dir="rtl"><head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReZa DNS Panel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }.panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 1.5rem;
+  padding: 0.8rem;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #845ec2, #2c73d2);
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #a178df, #4a90e2);
+}
+
+.output {
+  margin-top: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  word-wrap: break-word;
+}
+
+.copy-btn {
+  margin-top: 0.5rem;
+  background: #ffffff33;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+  </style>
+</head><body>
+  <div class="panel">
+    <h1>ReZa DNS Panel</h1>
+    <label>انتخاب کشور</label>
+    <select id="country">
+      <option>ایران</option>
+      <option>عراق</option>
+      <option>ترکیه</option>
+      <option>فرانسه</option>
+      <option>هلند</option>
+    </select><label>مدت زمان DNS (روز)</label>
+<input type="number" id="duration" min="1" />
+
+<label>حجم مصرفی DNS (گیگ)</label>
+<input type="number" id="volume" min="1" />
+
+<label>نوع DNS</label>
+<select id="type">
+  <option>معمولی</option>
+  <option>گلد</option>
+  <option>VIP</option>
+</select>
+
+<label>تعداد کد</label>
+<input type="number" id="count" min="1" />
+
+<label>نسل DNS</label>
+<select id="version">
+  <option value="ipv4">IPv4</option>
+  <option value="ipv6">IPv6</option>
+</select>
+
+<label>نوع سیمکارت</label>
+<select id="sim">
+  <option>ایرانسل</option>
+  <option>همراه اول</option>
+  <option>رایتل</option>
+</select>
+
+<button onclick="generateDNS()">تولید</button>
+
+<div class="output" id="output" style="display: none">
+  <div id="info"></div>
+  <div><strong>DNS:</strong> <span id="dns"></span></div>
+  <button class="copy-btn" onclick="copyDNS()">کپی DNS</button>
+</div>
+
+  </div>  <script>
+    function randomIPv4() {
+      return `45.${rand(0, 255)}.${rand(0, 255)}.${rand(1, 254)}`;
+    }
+
+    function randomIPv6() {
+      const parts = Array.from({ length: 7 }, () => Math.floor(Math.random() * 0xffff).toString(16));
+      return `2a00:${parts.join(':')}`;
+    }
+
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateDNS() {
+      const country = document.getElementById('country').value;
+      const duration = document.getElementById('duration').value;
+      const volume = document.getElementById('volume').value;
+      const type = document.getElementById('type').value;
+      const count = document.getElementById('count').value;
+      const version = document.getElementById('version').value;
+      const sim = document.getElementById('sim').value;
+
+      const dns = version === 'ipv4' ? randomIPv4() : randomIPv6();
+
+      document.getElementById('info').innerHTML = `
+        <strong>کشور:</strong> ${country} <br>
+        <strong>مدت:</strong> ${duration} روز<br>
+        <strong>حجم:</strong> ${volume} گیگ<br>
+        <strong>نوع:</strong> ${type}<br>
+        <strong>تعداد:</strong> ${count}<br>
+        <strong>نسل:</strong> ${version.toUpperCase()}<br>
+        <strong>سیمکارت:</strong> ${sim}<br>
+      `;
+      document.getElementById('dns').innerText = dns;
+      document.getElementById('output').style.display = 'block';
+    }
+
+    function copyDNS() {
+      const dnsText = document.getElementById('dns').innerText;
+      navigator.clipboard.writeText(dnsText).then(() => {
+        alert('DNS با موفقیت کپی شد!');
+      });
+    }
+  </script></body></html>
